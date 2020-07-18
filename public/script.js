@@ -14,8 +14,8 @@ function request(url, method, body) {
         url: response.url
       });
     }
-
-    return response.json().catch(() => { });
+    
+    return response.json().catch(() => {});
   });
 }
 
@@ -39,7 +39,7 @@ const app = new Vue({
       request('/api/todos', 'POST', { text: this.newTodoText })
         .then(todo => this.todos.push(todo))
         .catch(error => this.error = error);
-
+      
       this.newTodoText = '';
     },
     deleteTodo: function (todo, event) {
