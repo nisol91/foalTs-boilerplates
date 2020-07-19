@@ -7,13 +7,22 @@ import {
   HttpResponseNotFound,
   HttpResponseOK,
   Post,
+  TokenRequired,
   ValidateBody,
   ValidatePathParam,
 } from "@foal/core";
+import { fetchUser, TypeORMStore } from "@foal/typeorm";
 import { getRepository } from "typeorm";
 
-import { Todo } from "../entities";
+import { Todo, User } from "../entities";
 
+// all api routes are protected with token
+@TokenRequired({
+  cookie: true,
+  store: TypeORMStore,
+  // Make ctx.user be an instance of User.
+  user: fetchUser(User),
+})
 export class ApiController {
   @Get("/todos")
   async getTodos() {

@@ -1,9 +1,15 @@
-import { controller, Get, render } from "@foal/core";
+import { AuthController } from "./controllers";
+
+import { controller, Get, render, TokenRequired } from "@foal/core";
+import { TypeORMStore } from "@foal/typeorm";
 
 import { ApiController } from "./controllers";
 
 export class AppController {
-  subControllers = [controller("/api", ApiController)];
+  subControllers = [
+    controller("/api", ApiController),
+    controller("/auth", AuthController),
+  ];
   @Get("/template")
   index_test() {
     return render("./templates/index_test.html", {
@@ -12,6 +18,15 @@ export class AppController {
     });
   }
   @Get("/")
+  // "/" route is protected with token
+  @TokenRequired({
+    // The session token is expected to be in a cookie.
+    cookie: true,
+    // Redirect the user to /signin if they are not logged in.
+    redirectTo: "/signin",
+    // Specify the "store" where the session was created.
+    store: TypeORMStore,
+  })
   index() {
     return render("templates/index.html");
   }
