@@ -1,5 +1,4 @@
-import { AuthController } from "./controllers";
-
+import { SignupController, AuthController } from "./controllers";
 import { controller, Get, render, TokenRequired } from "@foal/core";
 import { TypeORMStore } from "@foal/typeorm";
 
@@ -9,6 +8,7 @@ export class AppController {
   subControllers = [
     controller("/api", ApiController),
     controller("/auth", AuthController),
+    controller("/signup", SignupController),
   ];
   @Get("/template")
   index_test() {
@@ -29,6 +29,10 @@ export class AppController {
   })
   index() {
     return render("templates/index.html");
+  }
+  @Get("/vini")
+  vini() {
+    return render("templates/vini.html");
   }
   @Get("/signin")
   signin() {
